@@ -5,12 +5,14 @@ import * as Dialog from '@radix-ui/react-dialog';
 import './App.css';
 
 const forkScanners = [
-  '164.92.191.219',
-  '206.189.33.200',
-  '134.122.38.54',
-  '164.92.157.54',
-  '188.166.145.51',
-  '165.232.134.41',
+  // '66.135.29.52:6001',
+
+  'scanner.ngkenny.dev',
+  // '206.189.33.200',
+  // '134.122.38.54',
+  // '164.92.157.54',
+  // '188.166.145.51',
+  // '165.232.134.41',
 ];
 type forkData = {
   ip: string;
@@ -82,7 +84,7 @@ function App() {
   };
 
   function setupSocketConnection(ip: string) {
-    const ws = new WebSocket(`ws://${ip}:6001`);
+    const ws = new WebSocket(`wss://${ip}`);
     console.log(`connecting to ${ip}`);
     setSocketState((oldState) => ({
       ...oldState,
@@ -134,12 +136,12 @@ function App() {
   }
 
   function handleMessageCallback(event: MessageEvent<any>) {
-    const currentIp = forkScanners.reduce((acc, ipAddr) => {
-      if (event.origin.includes(ipAddr)) acc = ipAddr;
-      return acc;
-    }, '');
+    // const currentIp = forkScanners.reduce((acc, ipAddr) => {
+    //   if (event.origin.includes(ipAddr)) acc = ipAddr;
+    //   return acc;
+    // }, '');
 
-    if (!currentIp) return;
+    // if (!currentIp) return;
 
     if (!event.data) return;
 
@@ -147,7 +149,7 @@ function App() {
 
     console.log(receivedData);
 
-    handleCallbackMethods(currentIp, receivedData.method as string, receivedData);
+    handleCallbackMethods(forkScanners[0], receivedData.method as string, receivedData);
   }
 
   // component lifecycle
