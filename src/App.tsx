@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import * as Dialog from '@radix-ui/react-dialog';
 
 import './App.css';
+import ToggleButton from './components/ui/toggle';
+import OrderOptions from './components/OrderOptions';
 
 const forkScanners = [
   // '66.135.29.52:6001',
-
   'scanner.ngkenny.dev',
   // '206.189.33.200',
   // '134.122.38.54',
@@ -78,6 +79,8 @@ function App() {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogData, setDialogData] = useState<nodeData[] | undefined>();
+
+  const [toggleState, setToggleState] = useState(false);
 
   const updateScannerData = (k: string, v: forkData) => {
     setScannerData(new Map(scannerData.set(k, v)));
@@ -204,88 +207,100 @@ function App() {
       </Dialog.Root>
 
       <div>
-        <div className='mx-auto max-w-7xl'>
-          <div className='bg-zinc-800 rounded-md border border-zinc-700 py-10'>
-            <div className='px-4 sm:px-6 lg:px-8'>
-              <div className='sm:flex sm:items-center'>
-                <div className='sm:flex-auto'>
-                  <h1 className='text-4xl font-semibold leading-6 text-white'>Fork Scanners</h1>
+        <div className='mx-auto w-[1024px] space-y-2'>
+          <div className='flex w-full'>
+            <ToggleButton
+              id='toggle-order'
+              labelText='Show Order Component'
+              onChange={() => setToggleState(!toggleState)}
+              labelRight={true}
+            />
+          </div>
+          {!toggleState ? (
+            <div className='bg-zinc-800 rounded-md border border-zinc-700 py-10'>
+              <div className='px-4 sm:px-6 lg:px-8'>
+                <div className='sm:flex sm:items-center'>
+                  <div className='sm:flex-auto'>
+                    <h1 className='text-4xl font-semibold leading-6 text-white'>Fork Scanners</h1>
+                  </div>
                 </div>
-              </div>
-              <div className='mt-4 flow-root'>
-                <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
-                  <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>
-                    <table className='min-w-full divide-y divide-zinc-700'>
-                      <thead>
-                        <tr>
-                          <th
-                            scope='col'
-                            className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-0'
-                          >
-                            Fork scanner #
-                          </th>
-                          <th
-                            scope='col'
-                            className='px-3 py-3.5 text-left text-sm font-semibold text-white'
-                          >
-                            IP address
-                          </th>
-                          <th
-                            scope='col'
-                            className='px-3 py-3.5 text-left text-sm font-semibold text-white'
-                          >
-                            Connection Status
-                          </th>
-                          <th
-                            scope='col'
-                            className='px-3 py-3.5 text-left text-sm font-semibold text-white'
-                          >
-                            Nodes connected
-                          </th>
-                          <th scope='col' className='relative py-3.5 pl-3 pr-4 sm:pr-0'>
-                            <span className='sr-only'>Action</span>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className='divide-y divide-zinc-800'>
-                        {Array.from(scannerData.values()).map((entry, id) => (
-                          <tr key={id}>
-                            <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-0'>
-                              Fork Scanner {id + 1}
-                            </td>
-                            <td className='whitespace-nowrap px-3 py-4 text-sm text-zinc-300'>
-                              {entry.ip}
-                            </td>
-                            <td
-                              className={`whitespace-nowrap px-3 py-4 text-sm ${mapConnectionColor(
-                                socketState[entry.ip]?.readyState || 3
-                              )}`}
+                <div className='mt-4 flow-root'>
+                  <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
+                    <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>
+                      <table className='min-w-full divide-y divide-zinc-700'>
+                        <thead>
+                          <tr>
+                            <th
+                              scope='col'
+                              className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-0'
                             >
-                              {CONNECTION_CODE[socketState[entry.ip]?.readyState || 3]}
-                            </td>
-                            <td className='whitespace-nowrap px-3 py-4 text-sm text-zinc-300'>
-                              {entry.nodes.length}
-                            </td>
-                            <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0'>
-                              <button
-                                className='bg-zinc-800 text-indigo-400 hover:text-indigo-300'
-                                onClick={() => {
-                                  setDialogData(entry.nodes);
-                                  setOpenDialog(!openDialog);
-                                }}
-                              >
-                                More Details
-                              </button>
-                            </td>
+                              Fork scanner #
+                            </th>
+                            <th
+                              scope='col'
+                              className='px-3 py-3.5 text-left text-sm font-semibold text-white'
+                            >
+                              IP address
+                            </th>
+                            <th
+                              scope='col'
+                              className='px-3 py-3.5 text-left text-sm font-semibold text-white'
+                            >
+                              Connection Status
+                            </th>
+                            <th
+                              scope='col'
+                              className='px-3 py-3.5 text-left text-sm font-semibold text-white'
+                            >
+                              Nodes connected
+                            </th>
+                            <th scope='col' className='relative py-3.5 pl-3 pr-4 sm:pr-0'>
+                              <span className='sr-only'>Action</span>
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className='divide-y divide-zinc-800'>
+                          {Array.from(scannerData.values()).map((entry, id) => (
+                            <tr key={id}>
+                              <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-0'>
+                                Fork Scanner {id + 1}
+                              </td>
+                              <td className='whitespace-nowrap px-3 py-4 text-sm text-zinc-300'>
+                                {entry.ip}
+                              </td>
+                              <td
+                                className={`whitespace-nowrap px-3 py-4 text-sm ${mapConnectionColor(
+                                  socketState[entry.ip]?.readyState || 3
+                                )}`}
+                              >
+                                {CONNECTION_CODE[socketState[entry.ip]?.readyState || 3]}
+                              </td>
+                              <td className='whitespace-nowrap px-3 py-4 text-sm text-zinc-300'>
+                                {entry.nodes.length}
+                              </td>
+                              <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0'>
+                                <button
+                                  className='bg-zinc-800 text-indigo-400 hover:text-indigo-300'
+                                  onClick={() => {
+                                    setDialogData(entry.nodes);
+                                    setOpenDialog(!openDialog);
+                                  }}
+                                >
+                                  More Details
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <OrderOptions />
+          )}
         </div>
       </div>
     </>
