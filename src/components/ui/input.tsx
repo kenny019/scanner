@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import * as cn from 'classnames';
+import { clsx } from 'clsx';
 
 const Input = ({
   id,
@@ -25,7 +25,7 @@ const Input = ({
       {labelText && (
         <label
           htmlFor={id}
-          className={cn(
+          className={clsx(
             labelDropdown && 'text-gray-100 cursor-pointer',
             'block leading-3 text-gray-400'
           )}
@@ -55,7 +55,7 @@ const Input = ({
         <input
           id={id}
           type={type ?? 'text'}
-          className={cn(
+          className={clsx(
             className,
             'bg-[#212031] block rounded-md w-full border border-gray-500 p-3 text-gray-300 placeholder:text-gray-500'
           )}

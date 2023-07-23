@@ -1,4 +1,4 @@
-import RangeSlider from './ui/RangeSlider';
+import RangeSlider from './ui/range_slider';
 import Button from './ui/button';
 import Input from './ui/input';
 import Tabs from './ui/tabs';

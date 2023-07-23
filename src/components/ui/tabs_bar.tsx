@@ -1,5 +1,3 @@
-import React from 'react';
-
 const tabs = ['Limit', 'Market', 'Stop'];
 
 const TabsBar = () => {

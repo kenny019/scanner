@@ -1,5 +1,3 @@
-import React from 'react';
-
 const tabs = ['Cross', '5.00x'];
 
 const Tabs = () => {

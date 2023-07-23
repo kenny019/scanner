@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import * as cn from 'classnames';
+import { useState } from 'react';
+import { clsx } from 'clsx';
 
 const arr = [true].concat(Array(4).fill(false));
 
@@ -14,9 +14,9 @@ const RangeSlider = () => {
           return (
             <span
               key={index}
-              className={cn(
-                !isSelected && 'bg-[#07081b] !border-gray-400',
-                'w-3 h-3 block rounded-full border border-transparent z-10 bg-white cursor-pointer'
+              className={clsx(
+                !isSelected ? 'bg-[#07081b] !border-gray-400' : 'bg-white border-transparent',
+                'w-3 h-3 block rounded-full border z-10 cursor-pointer'
               )}
               onClick={() => {
                 const newRangeArray = rangeArray.map((val, i) => {
