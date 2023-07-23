@@ -12,8 +12,8 @@ const Input = ({
 }: {
   id: string;
   className?: string;
-  type?: string;
-  labelText?: React.HTMLInputTypeAttribute;
+  type?: React.HTMLInputTypeAttribute;
+  labelText?: string;
   numberInput?: boolean;
   placeholder?: string;
   labelDropdown?: boolean;

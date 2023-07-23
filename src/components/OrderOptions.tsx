@@ -23,6 +23,7 @@ const OrderOptions = () => {
           labelText={'Amount (Cont)'}
           placeholder='Single Contract value 0.01 BTC'
           labelDropdown
+          type='number'
         />
         <RangeSlider />
       </div>
